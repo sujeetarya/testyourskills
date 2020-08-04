@@ -5,8 +5,8 @@ This project is created just for practice, it is basically a MCQ website where a
 * HTML 
 * CSS
 * JAVASCRIPT
-*BOOTSTRAP	4.1.3
-*PHP	7.2.14
-*MYSQL	5.7.24
-*Fontawesome	5.5.0
-*WampServer Version 3.1.7 64bit
+* BOOTSTRAP	4.1.3
+* PHP	7.2.14
+* MYSQL	5.7.24
+* Fontawesome	5.5.0
+* WampServer Version 3.1.7 64bit
