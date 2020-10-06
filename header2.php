@@ -1,3 +1,6 @@
+<?php
+	session_start();
+?>
 <!DOCTYPE html>
 <html >
 <head>
@@ -12,10 +15,6 @@
 </head>
 
 <body>
-
-	<div class="container-fluid" style="background-color:#3C9;"><!-- logo -->
-		<a href="index.php"><img src="img/logo.png" class="img-responsive" /></a>
-	</div>
 
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
 		<button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
@@ -33,8 +32,19 @@
 				<li class="nav-item"><a class="nav-link" href="About_Us.php">About Us</a></li>
 			</ul>
 			<ul class="nav navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link" href="signup.php"><span class="fas fa-user"></span> Sign Up</a></li>
-				<li class="nav-item"><a class="nav-link" href="login.php"><span class="fas fa-sign-in-alt"></span> Login</a></li>
+				<?php
+					if (isset($_SESSION['user_email'])) {
+						echo'<form action="logout.php" method="post">
+								<button type="submit" name="logout-submit">Logout</button>	
+							</form>';
+					}
+					else {
+						echo "<li class='nav-item'><a class='nav-link' href='login.php'>Login</a></li>
+						<li class='nav-item'><a class='nav-link' href='signup.php'>Sign Up</a></li>";
+					}
+				?>
+
+
 			</ul>
 		</div>
 	</nav>

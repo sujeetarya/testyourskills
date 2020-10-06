@@ -1,76 +1,85 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>sign up</title>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-	<style type="text/css">
-		.cent{width: 200px; height: 200px; position: fixed; top: 0; bottom: 0; left: 0; right: 0; margin: auto;";}
-	</style>
-	<style type="text/css">
-		.btn {padding:10px;border:none;border-radius:9px;color:#FFFFFF;background-color:#0066FF;}
-	</style>
-</head>
-<body style="background-color: #3C9;">
-	<table class="cent" style="font-weight: 700">
-		<form method="post">
-			<tr>
-				<td colspan="2" align="center"  style="color: red">
-					Login
-				</td>
-			</tr>
-			<tr>
-				<td>Name</td>
-				<td>
-					<input type="text" required="" name="txtName">
-				</td>
-			</tr>
-			<tr>
-				<td>Password&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td>
-					<input type="password" required="" name="passPassword">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="button" value="Cancel" name="btnCancel" class="btn" style="background-color: red;"
-					 onclick="window.location.href='index.php';">
-				</td>
-					<td align="right">
-						<input type="submit" value="Login" name="btnSubmit" class="btn">
-					</td>
-				</td>
-			</tr>
-		</form>
-	</table>
-	<?php
-		if(isset($_POST['btnSubmit']))
-		{
-			$name=$_POST['txtName'];
-			$password = $_POST['passPassword'];
-			
-				$con = mysqli_connect("localhost","root","");
-				$seldb = mysqli_select_db($con,"mcq_db");
-
-				$srt="SELECT * FROM `signup` WHERE name='$name'AND password='$password'";
-				$result = mysqli_query($con, $srt);
-				$numrow=mysqli_num_rows($result);
-				if ($numrow > 0) {
-					echo '<script language="javascript">';
-					echo 'alert("Correct")';
-					echo "</script>";
-					header("refresh:1; url=index.php");
-				}
-				else{
-					echo '<script language="javascript">';
-					echo 'alert("Invalid user name or password")';
-					echo "</script>";
-					header("refresh:1; url=index.php");
-				}
+<?php
+ include("header2.php");
+?>
+<style type="text/css">
+	*{
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
 		}
-	?>
-</body>
-</html>
+		.container_main{
+			background: #34495e;
+			height: 91vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.boxing{
+			background: #fff;
+			padding: 1.5em 2em;
+			box-shadow: 0 3px 7px rgba(0,0,0,.3);
+			border: 1px solid green;
+			border-radius: 10px;
+		}
+		.boxing h1{
+			text-decoration: underline red;
+			padding-bottom: .5em;
+		}
+		.btn{
+			border: 2px solid black;
+			border-radius: 5px;
+			box-shadow: 0 3px 7px rgba(0,0,0,.3);
+			background: #f2f2f2;
+		}
+		.btn:hover{
+			background: #000;
+			color: #fff;
+		}
+		.register{
+			float: right;
+		}
+</style>
+<?php
+	//session_start();
+	include("connection.php");	 
+?>
+	<div class="container_main">
+		<div class="boxing">
+			<form method="POST">
+				<h1>Login</h1>
+				Email<br><input type="text" name="email" required><br><br>
+				Password<br><input type="password" name="password" required><br><br>
+				<input class="btn" type="submit" name="login">
+			</form>
+			<a href="signup.php" float="right" class="register">Signup</a><br>
+<!--php file-->
+<?php
+	if(isset($_POST['login']))
+	{
+		$useremail=$_POST['email'];
+		$userpass=$_POST['password'];
+		if($useremail!="" && $userpass!="")
+		{
+			$query="select * from signup where email='$useremail' && password='$userpass'";
+			$data=mysqli_query($connect,$query);
+			$count=mysqli_num_rows($data);
+			if($count>0)
+			{
+				$_SESSION['user_email']=$useremail;
+				/*echo $_SESSION['username'];*/
+				header('location:index2.php');
+				/*echo "<font color='green'>&#x2714; </font>Successfully Logged in";*/
+			}
+			else
+			{
+				echo "<font color='red'>&#x2718; </font>Invalid	 user or password<br>
+				<a href='forgotpass.php'>Forgot Password?</a>";
+			}
+		}
+		/*else{
+			echo "<font color='red'>&#x2718; </font>All fields are required!";
+		}*/
+	}
+?>
+		</div>
+	</div>

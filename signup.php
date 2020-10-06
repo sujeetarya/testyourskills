@@ -1,84 +1,92 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>sign up</title>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-	<style type="text/css">
-		.cent{width: 200px; height: 200px; position: fixed; top: 0; bottom: 0; left: 0; right: 0; margin: auto;";}
-	</style>
-	<style type="text/css">
-		.btn {padding:10px;border:none;border-radius:9px;color:#FFFFFF;background-color:#0066FF;}
-	</style>
-</head>
-<body style="background-color: #3C9;">
-	<table class="cent" style="font-weight: 700" cellpadding="5px" class="table">
-		<form method="post">
-			<tr>
-				<td colspan="2" align="center"  style="color: red">Signup</td>
-			</tr>
-			<tr>
-				<td>Name</td>
-				<td>
-					<input type="text" required="" name="txtName">
-				</td>
-			</tr>
-			<tr>
-				<td>Password&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td>
-					<input type="password" required="" name="passPassword">
-				</td>
-			</tr>
-			<tr>
-				<td>Contact</td>
-				<td>
-					<input type="number" required="" name="numContact" maxlength="10">
-				</td>
-			</tr>
-			<tr>
-				<td>E-mail</td>
-				<td>
-					<input type="email" name="eEmail" required="">
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="button" value="Cancel" name="btnCancel" class="btn" style="background-color: red;"
-					 onclick="window.location.href='index.php';">
-				</td>
-					<td align="right">
-						<input type="submit" value="Submit" name="btnSubmit" class="btn">
-					</td>
-				</td>
-			</tr>
-		</form>
-	</table>
-	<?php
-		if(isset($_POST['btnSubmit']))
-		{
-			$name=$_POST['txtName'];
-			$password = $_POST['passPassword'];
-			$mobile = $_POST['numContact'];
-			$email = $_POST['eEmail'];
-			
-				$con = mysqli_connect("localhost","root","");
-				$seldb = mysqli_select_db($con,"mcq_db");
-
-				$srt="INSERT INTO signup(name,password,phone,email) VALUES ('$name','$password',$mobile,'$email')";
-				$srt2 = mysqli_query($con, $srt);
-				if ($srt2) {
-					echo '<script language="javascript">';
-					echo 'alert("Your account has been created")';
-					echo "</script>";
-					header("refresh:1; url=index.php");
-				}
-				else{
-					echo 'alert("Something went wrong")';
-				}
+<?php
+include("header2.php");
+ include("connection.php");
+?>
+<style type="text/css">
+	*{
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
 		}
-	?>
-</body>
-</html>
+		.container-main{
+			background: #34495e;
+			height: 91vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.boxing{
+			background: #fff;
+			padding: 1.5em 3em;
+			box-shadow: 0 3px 7px rgba(0,0,0,.3);
+			border: 2px solid black;
+			border-radius: 10px;
+		}
+		.boxing h1{
+			text-decoration: underline red;
+		}
+		.btn{
+			border: 2px solid black;
+			border-radius: 5px;
+			box-shadow: 0 3px 7px rgba(0,0,0,.3);
+			background: #f2f2f2;
+			padding: .5em 1em;
+		}
+		.btn:hover{
+			background: #000;
+			color: #fff;
+		}
+
+		.register{
+			float: right;
+		}
+</style>
+	<div class="container-main">
+		<div class="boxing">
+			<form method="POST">
+				<h1>Sign up</h1>
+				Name<br><input type="text" name="username"><br><br>
+				Email<br><input type="email" name="userid"><br><br>
+				Password<br><input type="password" name="userkey"><br><br>
+				<input class="btn" type="submit" name="submit"><br><br>
+			</form>
+			<a href="login.php" class="register">Login</a><br>
+<!--php file-->
+<?php
+	if(isset($_POST['submit']))
+	{
+		$username=$_POST['username'];
+		//$_SESSION['user']=$username;
+		$usermail=$_POST['userid'];
+		$userpass=$_POST['userkey'];
+		if($username!="" && $usermail!="" && $userpass!="")
+		{	//check if user/email already exist;
+			$query="SELECT * from signup where email='$usermail'"; 
+			$data=mysqli_query($connect,$query);
+			$count=mysqli_num_rows($data);
+			if($count>0)
+			{
+				echo "<font color='red'>&#x2718; </font>Email already exist! <a href='login.php'>Login</a>";
+			}
+			else
+			{ //inseting data to signup
+				$insert="INSERT INTO signup (name,password,email) VALUES('$username','$userpass','$usermail')"; 
+				$run=mysqli_query($connect,$insert);
+				if($run)
+				{
+					echo "<font color='green'>&#x2714; </font>Successfully Registered
+					<a href='login.php'>Login</a>";
+				}
+				else
+				{
+					echo "failed";
+				}
+			}
+		}
+		else{
+			echo "<font color='red'>&#x2718; </font>All fields are required!";
+		}
+	}
+?>
+		</div>
+	</div>
